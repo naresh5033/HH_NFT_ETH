@@ -55,9 +55,9 @@ we used pinata to upload our nft, `yarn add @pinata/sdk` --> and pinning by pinF
 
 However hosting in this pinata service has their own pros and cons.\
 pros : cheap \
-cons: someone has to pin our data 
+cons: someone has to pin our data
 
-## Dynamic SVG NFT 
+## Dynamic SVG NFT
 
 Pros: Our Data is On-chain, and we don't need to worry about somebody pinnig our data.
 Cons : Much more expensive for storig our data, so for this part instead of pngs im gona use svgs (scaled vector graphics).\
@@ -67,15 +67,37 @@ So our NFT will change based on the real world parameter.\
 
 This DynamicSvgNft is ERC721.sol, this will ve mint(), store our svg info somewhere and need to ve some logic to say show X img or show Y Img.
 
-## Base64 
+## Base64
 
 We can actually encode any svg to a base64 img url, we can convert the svg code into img uri --> svgToImgUri()
 
-```yarn add --dev base64-sol``` --> to encode and decode base 64.\
+`yarn add --dev base64-sol` --> to encode and decode base 64.\
 
-## low Svg or High SVg 
+## low Svg or High SVg
 
 we'll let the minters to choose the val b/w the vals they wana use(we'l assign the each nft their high val),
 
-Then in the _tokenURI(), we'll set if the price is >= tokenidtoHighval then we'll use high svg otherwise the low svg
+Then in the \_tokenURI(), we'll set if the price is >= tokenidtoHighval then we'll use high svg otherwise the low svg
 
+## Mint
+
+In the deploy scripts we ve mint.js for each of our contract to mint the nft.\
+
+Note: while deploying in the testnet we shouldn't call the mint fn, coz we need to add our consumer to the VRF before we mint.\
+
+`yarn hh deploy --network goerli --tags main`
+
+Basic nft --> "0xF305Dd14bD6dFb855aE886BaFB10809f3BD58090" \
+RandomIpfs NFT --> "0xb900C5f7DE8B0AbCcE10D07ea7d6Dc790ebe8Da5" \
+Dynamic Svg --> "0x3A6B7f54AE1B7cdC7806c9Dc44a455FB8f029c47" \
+
+Add this randipf nft addr as our consumer in our vrf.chain.link.\
+After added that addr now we can mint (04-mint.js/deploy) one nft from each one those above contracts.\
+`yarn hh deploy --network goerli --tags mint` \
+
+## openSea Testnet
+
+after we minted
+Grab the Dynamic svg addr(all the 3 addrs) and goto opensea testnet, search it we can see our nft there similarly we can see all our other nfts.\
+
+we can also check in the goerli etherscan -> read contract -> token Uri -> indx 0 -> our minted nft Uri. \
